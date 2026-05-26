@@ -35,7 +35,7 @@
 
     <div class="card">
       <h3 style="margin-bottom:1rem;">🎤 Oral Leaderboard</h3>
-      {% set max_oral = oral_board[0].vote_count if oral_board else 1 %}
+      {% set max_oral = oral_board[0].vote_count if (oral_board and oral_board[0].vote_count > 0) else 1 %}
       <div class="leaderboard">
         {% for r in oral_board %}
         <div class="lb-row">
@@ -57,7 +57,7 @@
 
     <div class="card">
       <h3 style="margin-bottom:1rem;">🪧 Poster Leaderboard</h3>
-      {% set max_poster = poster_board[0].vote_count if poster_board else 1 %}
+      {% set max_poster = poster_board[0].vote_count if (poster_board and poster_board[0].vote_count > 0) else 1 %}
       <div class="leaderboard">
         {% for r in poster_board %}
         <div class="lb-row">
