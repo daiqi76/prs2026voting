@@ -172,6 +172,13 @@ def get_leaderboard(category):
     return rows
 
 
+def reset_votes():
+    conn = get_db()
+    conn.execute("DELETE FROM votes")
+    conn.commit()
+    conn.close()
+
+
 def get_vote_details():
     conn = get_db()
     rows = conn.execute(

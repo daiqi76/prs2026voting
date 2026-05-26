@@ -23,11 +23,17 @@
         {% if voting_active %}● OPEN{% else %}● CLOSED{% endif %}
       </span>
     </div>
-    <form method="post" action="{{ url_for('admin_toggle') }}">
-      <button class="btn {% if voting_active %}btn--danger{% else %}btn--success{% endif %}">
-        {% if voting_active %}Close Voting{% else %}Open Voting{% endif %}
-      </button>
-    </form>
+    <div style="display:flex; gap:.75rem;">
+      <form method="post" action="{{ url_for('admin_toggle') }}">
+        <button class="btn {% if voting_active %}btn--danger{% else %}btn--success{% endif %}">
+          {% if voting_active %}Close Voting{% else %}Open Voting{% endif %}
+        </button>
+      </form>
+      <form method="post" action="{{ url_for('admin_reset') }}"
+            onsubmit="return confirm('This will permanently delete ALL votes. Are you sure?');">
+        <button class="btn btn--secondary">🗑 Reset All Votes</button>
+      </form>
+    </div>
   </div>
 
   <!-- Leaderboards -->

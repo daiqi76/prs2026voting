@@ -232,6 +232,14 @@ def admin_dashboard():
                            details=details)
 
 
+@app.route("/admin/reset", methods=["POST"])
+def admin_reset():
+    if not admin_logged_in():
+        return redirect(url_for("admin_login"))
+    db.reset_votes()
+    return redirect(url_for("admin_dashboard"))
+
+
 @app.route("/admin/toggle", methods=["POST"])
 def admin_toggle():
     if not admin_logged_in():
