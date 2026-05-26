@@ -31,7 +31,7 @@ if command -v ngrok &> /dev/null; then
   echo "Starting ngrok tunnel..."
   echo "Your public voting URL will appear below:"
   echo "-------------------------------------------"
-  ngrok http 5001
+  ngrok http --domain=email-dazzler-squint.ngrok-free.dev 5001
 else
   echo ""
   echo "ngrok not found. Flask is running locally."
