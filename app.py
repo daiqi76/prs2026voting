@@ -300,9 +300,9 @@ def export_csv():
     details = db.get_vote_details()
     output = io.StringIO()
     writer = csv.writer(output)
-    writer.writerow(["Voter", "Title", "Presenter", "Category", "Comment", "Timestamp"])
+    writer.writerow(["Title", "Presenter", "Category", "Comment", "Timestamp"])
     for r in details:
-        writer.writerow([r["voter_name"], r["title"], r["presenter"],
+        writer.writerow([r["title"], r["presenter"],
                          r["category"], r["comment"], r["timestamp"]])
     output.seek(0)
     return send_file(
@@ -322,9 +322,9 @@ def export_excel():
     # Detail sheet
     ws1 = wb.active
     ws1.title = "Vote Details"
-    ws1.append(["Voter", "Title", "Presenter", "Category", "Comment", "Timestamp"])
+    ws1.append(["Title", "Presenter", "Category", "Comment", "Timestamp"])
     for r in db.get_vote_details():
-        ws1.append([r["voter_name"], r["title"], r["presenter"],
+        ws1.append([r["title"], r["presenter"],
                     r["category"], r["comment"], r["timestamp"]])
 
     # Leaderboard sheets

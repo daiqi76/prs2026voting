@@ -93,7 +93,6 @@
       <table class="data-table">
         <thead>
           <tr>
-            <th>Voter</th>
             <th>Title</th>
             <th>Presenter</th>
             <th>Category</th>
@@ -104,7 +103,6 @@
         <tbody>
           {% for r in details %}
           <tr>
-            <td>{{ r.voter_name }}</td>
             <td>{{ r.title or "N/A" }}</td>
             <td>{{ r.presenter or "N/A" }}</td>
             <td>{{ r.category }}</td>
