@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}PRS 2026 — Confirm Your Votes{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div style="margin-top: 2.5rem;"></div>
+
+  <div class="steps">
+    <div class="step done"><div class="step__num">✓</div> Identity</div>
+    <div class="step-divider"></div>
+    <div class="step done"><div class="step__num">✓</div> Oral Vote</div>
+    <div class="step-divider"></div>
+    <div class="step done"><div class="step__num">✓</div> Poster Vote</div>
+    <div class="step-divider"></div>
+    <div class="step active"><div class="step__num">4</div> Confirm</div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-bottom:.5rem;">Review Your Votes</h2>
+    <p style="color:var(--gray-600); font-size:.9rem; margin-bottom:1.5rem;">
+      Voting as <strong>{{ voter_name }}</strong>. Please review your selections below.
+      Once you click <strong>Confirm &amp; Finish</strong>, your votes are final and cannot be changed.
+    </p>
+
+    <div class="summary-section">
+      <h3>🎤 Oral Presentation</h3>
+      {% for c in oral_candidates %}
+        <div class="summary-item">
+          <strong>{{ c.title or "N/A" }}</strong>
+          <span style="color:var(--gray-600); font-size:.85rem;"> — {{ c.presenter or "N/A" }}</span>
+        </div>
+      {% endfor %}
+      {% if oral_comment %}
+        <div style="margin-top:.5rem; font-size:.85rem; color:var(--gray-600);">
+          💬 Comment: {{ oral_comment }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="summary-section">
+      <h3>🪧 Poster Session</h3>
+      {% for c in poster_candidates %}
+        <div class="summary-item">
+          <strong>{{ c.title or "N/A" }}</strong>
+          <span style="color:var(--gray-600); font-size:.85rem;"> — {{ c.presenter or "N/A" }}</span>
+        </div>
+      {% endfor %}
+      {% if poster_comment %}
+        <div style="margin-top:.5rem; font-size:.85rem; color:var(--gray-600);">
+          💬 Comment: {{ poster_comment }}
+        </div>
+      {% endif %}
+    </div>
+
+    <form method="post">
+      <div class="btn-row">
+        <button class="btn btn--secondary" type="submit" name="action" value="back">← Back to Poster</button>
+        <button class="btn btn--success" type="submit" name="action" value="confirm">
+          ✓ Confirm &amp; Finish
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

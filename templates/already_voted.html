@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}PRS 2026 — Already Voted{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="center-page">
+    <div class="icon">⚠️</div>
+    <h2>Vote Already Submitted</h2>
+    <p>
+      {% if category == "both" %}
+        Our records show that you have already submitted votes for both Oral and Poster.
+      {% else %}
+        Our records show that you have already submitted your <strong>{{ category }}</strong> vote.
+      {% endif %}
+      Each participant may only vote once. If you believe this is an error, please contact the organiser.
+    </p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}PRS 2026 — Admin Dashboard{% endblock %}
+{% block header_right %}
+  <a href="{{ url_for('admin_logout') }}">Logout</a>
+{% endblock %}
+
+{% block content %}
+<div class="container--wide">
+  <div style="margin-top:2rem;"></div>
+
+  <div class="admin-nav">
+    <a href="{{ url_for('admin_dashboard') }}" class="active">Dashboard</a>
+    <a href="{{ url_for('admin_candidates') }}">Manage Candidates</a>
+    <a href="{{ url_for('export_csv') }}">Export CSV</a>
+    <a href="{{ url_for('export_excel') }}">Export Excel</a>
+  </div>
+
+  <!-- Voting toggle -->
+  <div class="card" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+    <div>
+      <h3 style="margin-bottom:.3rem;">Voting Status</h3>
+      <span class="badge {% if voting_active %}badge--open{% else %}badge--closed{% endif %}">
+        {% if voting_active %}● OPEN{% else %}● CLOSED{% endif %}
+      </span>
+    </div>
+    <form method="post" action="{{ url_for('admin_toggle') }}">
+      <button class="btn {% if voting_active %}btn--danger{% else %}btn--success{% endif %}">
+        {% if voting_active %}Close Voting{% else %}Open Voting{% endif %}
+      </button>
+    </form>
+  </div>
+
+  <!-- Leaderboards -->
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:1.5rem;">
+
+    <div class="card">
+      <h3 style="margin-bottom:1rem;">🎤 Oral Leaderboard</h3>
+      {% set max_oral = oral_board[0].vote_count if oral_board else 1 %}
+      <div class="leaderboard">
+        {% for r in oral_board %}
+        <div class="lb-row">
+          <div class="lb-rank">{{ loop.index }}</div>
+          <div class="lb-info">
+            <div class="lb-title">{{ r.title or "N/A" }}</div>
+            <div class="lb-presenter">{{ r.presenter or "N/A" }}</div>
+          </div>
+          <div class="lb-bar-wrap">
+            <div class="lb-bar" style="width:{{ (r.vote_count / max_oral * 100)|int }}%"></div>
+          </div>
+          <div class="lb-count">{{ r.vote_count }}</div>
+        </div>
+        {% else %}
+          <p style="color:var(--gray-400); font-size:.9rem;">No votes yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:1rem;">🪧 Poster Leaderboard</h3>
+      {% set max_poster = poster_board[0].vote_count if poster_board else 1 %}
+      <div class="leaderboard">
+        {% for r in poster_board %}
+        <div class="lb-row">
+          <div class="lb-rank">{{ loop.index }}</div>
+          <div class="lb-info">
+            <div class="lb-title">{{ r.title or "N/A" }}</div>
+            <div class="lb-presenter">{{ r.presenter or "N/A" }}</div>
+          </div>
+          <div class="lb-bar-wrap">
+            <div class="lb-bar" style="width:{{ (r.vote_count / max_poster * 100)|int }}%"></div>
+          </div>
+          <div class="lb-count">{{ r.vote_count }}</div>
+        </div>
+        {% else %}
+          <p style="color:var(--gray-400); font-size:.9rem;">No votes yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Vote detail log -->
+  <div class="card">
+    <h3 style="margin-bottom:1rem;">📋 Vote Detail Log</h3>
+    {% if details %}
+    <div style="overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Voter</th>
+            <th>Title</th>
+            <th>Presenter</th>
+            <th>Category</th>
+            <th>Comment</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in details %}
+          <tr>
+            <td>{{ r.voter_name }}</td>
+            <td>{{ r.title or "N/A" }}</td>
+            <td>{{ r.presenter or "N/A" }}</td>
+            <td>{{ r.category }}</td>
+            <td>{{ r.comment or "—" }}</td>
+            <td style="font-size:.8rem; color:var(--gray-600);">{{ r.timestamp }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <p style="color:var(--gray-400); font-size:.9rem;">No votes have been cast yet.</p>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}PRS 2026 — Manage Candidates{% endblock %}
+{% block header_right %}
+  <a href="{{ url_for('admin_logout') }}">Logout</a>
+{% endblock %}
+
+{% block content %}
+<div class="container--wide">
+  <div style="margin-top:2rem;"></div>
+
+  <div class="admin-nav">
+    <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('admin_candidates') }}" class="active">Manage Candidates</a>
+    <a href="{{ url_for('export_csv') }}">Export CSV</a>
+    <a href="{{ url_for('export_excel') }}">Export Excel</a>
+  </div>
+
+  {% for category, candidates in [("Oral", oral), ("Poster", poster)] %}
+  <div class="card" style="margin-bottom:2rem;">
+    <h3 style="margin-bottom:1.25rem;">
+      {% if category == "Oral" %}🎤{% else %}🪧{% endif %} {{ category }} Candidates
+    </h3>
+
+    <!-- Add form -->
+    <form method="post" action="{{ url_for('admin_add_candidate') }}"
+          style="display:grid; grid-template-columns:1fr 1fr auto auto; gap:.75rem; align-items:end; margin-bottom:1.5rem; flex-wrap:wrap;">
+      <input type="hidden" name="category" value="{{ category }}" />
+      <div>
+        <label style="font-size:.8rem; font-weight:600; display:block; margin-bottom:.3rem;">Title</label>
+        <input type="text" name="title" placeholder="Presentation title" />
+      </div>
+      <div>
+        <label style="font-size:.8rem; font-weight:600; display:block; margin-bottom:.3rem;">Presenter</label>
+        <input type="text" name="presenter" placeholder="Presenter name" />
+      </div>
+      <div>
+        <label style="font-size:.8rem; font-weight:600; display:block; margin-bottom:.3rem;">Order</label>
+        <input type="text" name="display_order" value="0" style="width:70px;" />
+      </div>
+      <div>
+        <button class="btn btn--primary btn--sm" type="submit">+ Add</button>
+      </div>
+    </form>
+
+    <!-- Candidate table -->
+    {% if candidates %}
+    <div style="overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Presenter</th>
+            <th>Order</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in candidates %}
+          <tr>
+            <td style="color:var(--gray-400); font-size:.85rem;">{{ c.id }}</td>
+            <td>
+              <form method="post" action="{{ url_for('admin_edit_candidate', cid=c.id) }}"
+                    style="display:contents;" id="edit-form-{{ c.id }}">
+                <input type="text" name="title" value="{{ c.title or '' }}"
+                       placeholder="N/A" style="border:none; background:transparent; padding:0; font-size:.9rem; width:100%;"
+                       onfocus="this.style.border='1.5px solid var(--primary)'; this.style.borderRadius='4px'; this.style.padding='.2rem .4rem';"
+                       onblur="this.style.border='none'; this.style.padding='0';" />
+            </td>
+            <td>
+                <input type="text" name="presenter" value="{{ c.presenter or '' }}"
+                       placeholder="N/A" style="border:none; background:transparent; padding:0; font-size:.9rem; width:100%;"
+                       onfocus="this.style.border='1.5px solid var(--primary)'; this.style.borderRadius='4px'; this.style.padding='.2rem .4rem';"
+                       onblur="this.style.border='none'; this.style.padding='0';" />
+            </td>
+            <td>
+                <input type="text" name="display_order" value="{{ c.display_order }}"
+                       style="border:none; background:transparent; padding:0; font-size:.9rem; width:40px;"
+                       onfocus="this.style.border='1.5px solid var(--primary)'; this.style.borderRadius='4px'; this.style.padding='.2rem .4rem';"
+                       onblur="this.style.border='none'; this.style.padding='0';" />
+            </td>
+            <td style="display:flex; gap:.5rem; align-items:center;">
+                <button class="btn btn--primary btn--sm" type="submit">Save</button>
+              </form>
+              <form method="post" action="{{ url_for('admin_delete_candidate', cid=c.id) }}"
+                    onsubmit="return confirm('Delete this candidate?');">
+                <button class="btn btn--danger btn--sm" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <p style="color:var(--gray-400); font-size:.9rem;">No candidates added yet.</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+
+</div>
+{% endblock %}

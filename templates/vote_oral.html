@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}PRS 2026 — Oral Vote{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div style="margin-top: 2.5rem;"></div>
+
+  <div class="steps">
+    <div class="step done"><div class="step__num">✓</div> Identity</div>
+    <div class="step-divider"></div>
+    <div class="step active"><div class="step__num">2</div> Oral Vote</div>
+    <div class="step-divider"></div>
+    <div class="step"><div class="step__num">3</div> Poster Vote</div>
+    <div class="step-divider"></div>
+    <div class="step"><div class="step__num">4</div> Confirm</div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-bottom:.25rem;">Oral Presentation Vote</h2>
+    <p style="color:var(--gray-600); font-size:.9rem; margin-bottom:1.25rem;">
+      Voting as <strong>{{ session.voter_name }}</strong> &nbsp;·&nbsp;
+      Select <strong>up to 2</strong> oral presentations you found most impressive.
+    </p>
+
+    {% if error %}
+      <div class="alert alert--error">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" id="oral-form">
+      <div class="candidate-list">
+        {% for c in candidates %}
+        <label class="candidate-item {% if draft.ids and c.id|string in draft.ids %}selected{% endif %}">
+          <input type="checkbox" name="candidates" value="{{ c.id }}"
+            {% if draft.ids and c.id|string in draft.ids %}checked{% endif %} />
+          <div class="candidate-info">
+            <div class="candidate-title">{{ c.title or "N/A" }}</div>
+            <div class="candidate-presenter">Presenter: {{ c.presenter or "N/A" }}</div>
+          </div>
+        </label>
+        {% else %}
+          <div class="alert alert--info">No oral candidates have been added yet.</div>
+        {% endfor %}
+      </div>
+
+      <div class="form-group">
+        <label for="comment">Comment <span style="color:var(--gray-400); font-weight:400;">(optional)</span></label>
+        <textarea id="comment" name="comment" placeholder="Share your thoughts...">{{ draft.comment or "" }}</textarea>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn--primary" type="submit">Next: Poster Vote →</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Enforce max 2 checkboxes
+  const form = document.getElementById('oral-form');
+  form.addEventListener('change', function(e) {
+    if (e.target.type !== 'checkbox') return;
+    const checked = form.querySelectorAll('input[type="checkbox"]:checked');
+    if (checked.length > 2) {
+      e.target.checked = false;
+      e.target.closest('.candidate-item').classList.remove('selected');
+    }
+  });
+</script>
+{% endblock %}

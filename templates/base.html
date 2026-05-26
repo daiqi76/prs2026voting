@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}PRS 2026 Voting{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>🎓 PRS 2026 — Voting System</h1>
+    {% block header_right %}{% endblock %}
+  </header>
+
+  {% block content %}{% endblock %}
+
+  <script>
+    // Highlight selected candidate cards
+    document.querySelectorAll('.candidate-item').forEach(item => {
+      const cb = item.querySelector('input[type="checkbox"]');
+      if (cb && cb.checked) item.classList.add('selected');
+      item.addEventListener('click', function(e) {
+        if (e.target === cb) return;
+        cb.checked = !cb.checked;
+        cb.dispatchEvent(new Event('change'));
+      });
+      cb && cb.addEventListener('change', function() {
+        item.classList.toggle('selected', this.checked);
+      });
+    });
+  </script>
+</body>
+</html>
