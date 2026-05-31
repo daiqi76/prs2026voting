@@ -1,14 +1,14 @@
 # wsgi_pythonanywhere.py
 # WSGI entry point template for deploying this app on PythonAnywhere.
 # Copy the contents of this file into the WSGI configuration file that
-# PythonAnywhere generates for you (found under the "Web" tab), and replace
-# YOUR_USERNAME with your actual PythonAnywhere username.
+# PythonAnywhere generates for you (found under the "Web" tab).
+# IMPORTANT: paste only pure Python code — do NOT include any Markdown
+# code fences (the ``` backtick lines).
 
 import sys
 
 # Path to the project directory (where app.py lives).
-# Replace YOUR_USERNAME with your PythonAnywhere username.
-project_home = "/home/YOUR_USERNAME/prs2026voting"
+project_home = "/home/prs/prs2026voting"
 if project_home not in sys.path:
     sys.path.insert(0, project_home)
 

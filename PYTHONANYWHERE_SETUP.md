@@ -4,6 +4,10 @@ This guide walks you through hosting the PRS voting system on **PythonAnywhere**
 a free cloud platform. Once deployed, the website stays online 24/7 — you no
 longer need to keep a Mac running with ngrok.
 
+> The current live deployment uses the username **`prs`**, so the site is at
+> `https://prs.pythonanywhere.com`. If you deploy your own copy, replace `prs`
+> with your own PythonAnywhere username throughout this guide.
+
 > **Free tier notes:** completely free, no credit card. The site stays online,
 > but free accounts must click a "Run until 3 months from today" button on the
 > Web tab once every 3 months to keep it active (you get an email reminder).
@@ -15,7 +19,7 @@ longer need to keep a Mac running with ngrok.
 1. Go to **https://www.pythonanywhere.com/registration/register/beginner/**
 2. Sign up for a free **Beginner** account.
 3. Remember your **username** — your site will live at
-   `https://YOUR_USERNAME.pythonanywhere.com`
+   `https://prs.pythonanywhere.com`
 
 ---
 
@@ -62,10 +66,10 @@ Wait until installation finishes. Note the Python version by running
 On the **Web** tab, scroll to the **Virtualenv** section and enter:
 
 ```
-/home/YOUR_USERNAME/prs2026voting/venv
+/home/prs/prs2026voting/venv
 ```
 
-(replace `YOUR_USERNAME` with your username)
+(if you deploy your own copy, replace `prs` with your username)
 
 ---
 
@@ -73,14 +77,15 @@ On the **Web** tab, scroll to the **Virtualenv** section and enter:
 
 1. On the **Web** tab, find the **Code** section and click the link next to
    **WSGI configuration file** (looks like
-   `/var/www/YOUR_USERNAME_pythonanywhere_com_wsgi.py`).
+   `/var/www/prs_pythonanywhere_com_wsgi.py`).
 2. **Delete everything** in that file.
-3. Paste the following, replacing `YOUR_USERNAME`:
+3. Paste the following (pure Python only — do **NOT** include the ``` ``` ```
+   backtick lines, only the 7 lines between them):
 
    ```python
    import sys
 
-   project_home = "/home/YOUR_USERNAME/prs2026voting"
+   project_home = "/home/prs/prs2026voting"
    if project_home not in sys.path:
        sys.path.insert(0, project_home)
 
@@ -89,14 +94,18 @@ On the **Web** tab, scroll to the **Virtualenv** section and enter:
 
 4. Click **Save** (top right).
 
+> ⚠️ **Common mistake:** if you copy the Markdown code block including the
+> ` ```python ` and ` ``` ` lines, the site will fail with an "Unhandled
+> Exception". The first line of the WSGI file must be exactly `import sys`.
+
 ---
 
 ## Step 7 — Set source & working directory (optional but recommended)
 
 On the **Web** tab, **Code** section:
 
-- **Source code:** `/home/YOUR_USERNAME/prs2026voting`
-- **Working directory:** `/home/YOUR_USERNAME/prs2026voting`
+- **Source code:** `/home/prs/prs2026voting`
+- **Working directory:** `/home/prs/prs2026voting`
 
 ---
 
@@ -108,8 +117,8 @@ On the **Web** tab, **Code** section:
 
    | Role | URL |
    |---|---|
-   | Voters | `https://YOUR_USERNAME.pythonanywhere.com` |
-   | Admin | `https://YOUR_USERNAME.pythonanywhere.com/admin` |
+   | Voters | `https://prs.pythonanywhere.com` |
+   | Admin | `https://prs.pythonanywhere.com/admin` |
 
    **Admin password:** `PRS2026!@#`
 
@@ -135,4 +144,4 @@ Then go to the **Web** tab and click **Reload**.
 
 - Use the admin panel's **Export CSV / Excel** buttons to download results.
 - The SQLite database file (`votes.db`) lives at
-  `/home/YOUR_USERNAME/prs2026voting/votes.db` and persists across restarts.
+  `/home/prs/prs2026voting/votes.db` and persists across restarts.
