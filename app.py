@@ -18,6 +18,10 @@ app.secret_key = os.environ.get("SECRET_KEY", "prs2026-secret-key-change-in-prod
 
 ADMIN_PASSWORD = "PRS2026!@#"
 
+# Ensure database tables exist on startup. This runs at import time so it works
+# under WSGI servers (e.g. PythonAnywhere) where __main__ is never executed.
+db.init_db()
+
 # ─────────────────────────────────────────────
 # Helpers
 # ─────────────────────────────────────────────
